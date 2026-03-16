@@ -1,0 +1,41 @@
+{
+  "dependencies": {
+    "express": "^5.2.1",
+    "reflect-metadata": "^0.2.2",
+    "sqlite3": "^6.0.1",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "name": "api-de-controle-financeiro",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "build": "rimraf ./build && tsc",
+    "start": "node build/index.js",
+    "typeorm": "tsx ./node_modules/typeorm/cli.js",
+    "migration:create": "npm run typeorm migration:create",
+    "migration:run": "tsx ./node_modules/typeorm/cli.js migration:run -d src/database/index.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs -- migration:revert -d src/database/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RicardoNsm/API-de-Controle-Financeiro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RicardoNsm/API-de-Controle-Financeiro/issues"
+  },
+  "homepage": "https://github.com/RicardoNsm/API-de-Controle-Financeiro#readme",
+  "description": ""
+}

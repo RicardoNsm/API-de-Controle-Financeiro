@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    /* Estrutura de Pastas */
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    /* Linguagem e Ambiente */
+    "target": "esnext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext", // Mantemos NodeNext, mas vamos ajustar o resto
+    "lib": ["esnext"],
+    "types": ["node", "reflect-metadata"],
+
+    /* Configurações para TypeORM e Decorators */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Rigidez e Performance */
+    "strict": true,
+    "skipLibCheck": true, // ESSENCIAL: Ignora erros dentro da pasta node_modules
+    
+    /* Outros */
+    "sourceMap": true,
+    "declaration": true,
+    "verbatimModuleSyntax": false, // Mude para false para facilitar o uso do TypeORM
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
