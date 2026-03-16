@@ -17,3 +17,4 @@ router.post("/transaction", transactionController.createTransaction);
 router.get("/transaction/:id", transactionController.getTransactionById);
 router.get("/users/:id_user/transactions", transactionController.getTransactionByUserId);
 router.put("/transactions/:id", transactionController.updateTransaction);
+router.delete("/transaction/:id", transactionController.deleteTransaction);

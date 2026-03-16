@@ -27,4 +27,7 @@ export class TransactionService{
             type
         })
     }
+     deleteTransaction = async (id:string) => {
+        return await this.transactionRepository.deleteTransaction(id)
+     }
 } 

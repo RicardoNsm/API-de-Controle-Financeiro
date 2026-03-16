@@ -47,4 +47,14 @@ export class TransactionController {
         )
         return response.status(200).json(transaction)
     }
+     deleteTransaction = async (request: Request, response: Response) => {
+        const { id } = request.params
+    
+    try{
+        this.transactionService.deleteTransaction(id as string)
+        return response.status(200).json({ message: "transaction deletada"})
+    } catch (err: any) {
+        return response.status(400).json({ message:"Erro ao deletar transaction" });
+    }
+    }
 }

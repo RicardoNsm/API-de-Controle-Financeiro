@@ -37,4 +37,6 @@ export class TransactionRepository{
        this.manager.merge(Transaction, transaction, data);
        return await this.manager.save(transaction);
     }
+    deleteTransaction = async (id:string) => {
+        return await this.manager.delete(Transaction, {id})    }
 }
