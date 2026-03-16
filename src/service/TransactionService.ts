@@ -20,4 +20,11 @@ export class TransactionService{
     getTransactionByUserId = async (id_user: string) => {
         return await this.transactionRepository.getTransactionByUserId(id_user)
     }
+     updateTransaction = async (id:string, title: string,amount: number, type: string) => {
+        return await this.transactionRepository.updateTransaction(id, {
+            title,
+            amount,
+            type
+        })
+    }
 } 

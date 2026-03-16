@@ -1,3 +1,4 @@
+import { Transaction } from "typeorm";
 import { AppDataSource } from "../database/index.js";
 import { User } from "../entities/UserEntities.js";
 import { UserRepository } from "../repository/UserRepository.js";
@@ -26,4 +27,5 @@ export class UserService {
     deleteUser = async (id: string) => {
         return await this.userRepository.deleteUser(id);
     }
+   
 }

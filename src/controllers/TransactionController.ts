@@ -37,4 +37,14 @@ export class TransactionController {
          return response.status(200).json(transactions)
          
        }
+        updateTransaction = async (request: Request, response: Response) => {
+        const {id} = request.body
+        const {title,amount,type} = request.body
+        const transaction = this.transactionService.updateTransaction(id, 
+            title,
+            amount,
+            type
+        )
+        return response.status(200).json(transaction)
+    }
 }

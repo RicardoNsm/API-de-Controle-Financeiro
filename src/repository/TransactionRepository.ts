@@ -26,4 +26,15 @@ export class TransactionRepository{
                 id_user
         })
     }
+
+    updateTransaction = async (id:string, data: Partial<Transaction>)=> {
+       const transaction = await this.manager.findOneBy(Transaction ,{id})
+
+       if(!transaction){
+        throw new Error("Transaction not found");
+       }
+       
+       this.manager.merge(Transaction, transaction, data);
+       return await this.manager.save(transaction);
+    }
 }
