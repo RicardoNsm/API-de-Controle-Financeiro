@@ -21,7 +21,7 @@ export class TransactionRepository{
             }
         })
     }
-     getTransactionByUserId = async (id_user: string): Promise<Transaction[] | null> => {
+     getTransactionByUserId = async (id_user: string): Promise<Transaction[]> => {
         return await this.manager.findBy(Transaction, {
                 id_user
         })

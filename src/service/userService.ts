@@ -1,7 +1,7 @@
-import { Transaction } from "typeorm";
 import { AppDataSource } from "../database/index.js";
 import { User } from "../entities/UserEntities.js";
 import { UserRepository } from "../repository/UserRepository.js";
+import jwt from "jsonwebtoken"
 
 export class UserService {
     private userRepository: UserRepository;
@@ -18,14 +18,35 @@ export class UserService {
     getUserById = async (id: string): Promise<User | null> => {
         return await this.userRepository.getUserById(id);
     }
-    getUserByEmail = async (email: string): Promise<User | null> => {
-        return await this.userRepository.getUserByEmail(email)
-    }
     getAllUsers = async () => {
         return await this.userRepository.getAllUsers()
     }
     deleteUser = async (id: string) => {
         return await this.userRepository.deleteUser(id);
+    }
+    getAuthenticateUser = async (email:string, password:string): Promise<User | null> => {
+        return this.userRepository.getUserByEmailandPassword(email,password)
+    }
+    getToken = async (email:string , password: string) => {
+        const user = await this.getAuthenticateUser(email,password)
+
+        if(!user){
+            throw new Error('email/password invalido')
+        }
+
+        const tokenData = {
+        name: user?.name,
+        email: user?.email
+        }
+        const tokenKey = "123456789"
+        
+        const tokenOptions = {
+            subject : user?.id
+        }
+        
+        const token = jwt.sign(tokenData, tokenKey, tokenOptions)
+        
+        return token
     }
    
 }

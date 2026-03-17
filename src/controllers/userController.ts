@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../service/userService.js";
-import { request } from "node:http";
+
 
 export class UserController {
     private userService: UserService;
@@ -31,19 +31,6 @@ export class UserController {
        
     }
     
-    getUserByEmail = async (request: Request, response: Response) => {
-        const { email } = request.body
-        const user = await this.userService.getUserByEmail(email)
-          console.log(user)
-        if(user){
-             return response.status(200).json({
-            id: user?.id,
-            name: user?.name,
-            email: user?.email
-        })
-        }
-        return response.status(400).json({ message: "email não encontrado"})
-    }
 
     getAllUsers = async (request: Request,response: Response) => {
        
@@ -56,15 +43,15 @@ export class UserController {
        }
     }
     deleteUser = async (request: Request, response: Response) => {
-    const { id } = request.params;
-    
-    try {
-        await this.userService.deleteUser(id as string);
-
-        return response.status(200).json({ message: "usuario deletado"});
-
-    } catch (err: any) {
-        return response.status(400).json({ message:"Erro ao deletar usuário" });
+        
+    if (!request.user) {
+    return response.status(401).json({ message: "não autorizado" })
     }
+
+     const userId = request.user.id 
+    
+      await this.userService.deleteUser(userId)
+
+    return response.status(200).json({ message: "usuário deletado" })
 }
 }

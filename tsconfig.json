@@ -3,6 +3,7 @@
     /* Estrutura de Pastas */
     "rootDir": "./src",
     "outDir": "./dist",
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
 
     /* Linguagem e Ambiente */
     "target": "esnext",
