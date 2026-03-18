@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../service/userService.js";
+import { z } from 'zod';
 
 
 export class UserController {
@@ -10,11 +11,28 @@ export class UserController {
     ){
         this.userService = userService;
     }
-    createUser = (request: Request, response:Response): Response => {
-        const user = request.body;
-        this.userService.createUser(user.name, user.email, user.password)
-        return response.status(201).json({message: "User created successfully"});
+    // Adicione o 'async' aqui
+createUser = async (request: Request, response: Response): Promise<Response> => {
+    try {
+        const user = request.body; // Este já é o objeto { name, email, password }
+        
+        // MUDANÇA MÍNIMA: Passe 'user' em vez de 'user.name, user.email, user.password'
+        await this.userService.createUser(user); 
+
+        return response.status(201).json({ message: "User created successfully" });
+   } catch (error: any) {
+        // Se o erro for do Zod, retornamos os erros detalhados por campo
+        if (error instanceof z.ZodError) {
+            return response.status(400).json({
+                message: "Erro de validação",
+                errors: error.flatten().fieldErrors // Isso deixa o erro limpo!
+            });
+        }
+
+        // Se for outro erro (como e-mail já cadastrado), retorna a mensagem simples
+        return response.status(400).json({ error: error.message });
     }
+}
 
     getUserById = async (request: Request, response: Response) => {
         const { id } = request.params;

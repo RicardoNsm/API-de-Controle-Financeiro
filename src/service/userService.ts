@@ -2,6 +2,8 @@ import { AppDataSource } from "../database/index.js";
 import { User } from "../entities/UserEntities.js";
 import { UserRepository } from "../repository/UserRepository.js";
 import jwt from "jsonwebtoken"
+import * as bcrypt from "bcrypt"
+import { createUserSchema } from "../schema/user.schema.js";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -11,8 +13,15 @@ export class UserService {
     ){
         this.userRepository = userRepository;
     }
-    createUser = async (name:string,email:string,password:string): Promise<User> => {
-        const user = new User(name, email, password);
+    createUser = async (data: any) => {
+        const validatedData = createUserSchema.parse(data);
+
+        const existingUser = await this.userRepository.getUserByEmail(validatedData.email);
+        if (existingUser) {
+            throw new Error("E-mail já cadastrado");
+        }
+        const passwordHash = await bcrypt.hash(validatedData.password, 10)
+        const user = new User(validatedData.name, validatedData.email, passwordHash);
         return await this.userRepository.createUser(user);
     }
     getUserById = async (id: string): Promise<User | null> => {
