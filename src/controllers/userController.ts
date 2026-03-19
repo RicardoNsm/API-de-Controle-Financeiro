@@ -11,14 +11,13 @@ export class UserController {
     ){
         this.userService = userService;
     }
-    // Adicione o 'async' aqui
+
 createUser = async (request: Request, response: Response): Promise<Response> => {
     try {
-        const user = request.body; // Este já é o objeto { name, email, password }
+        const user = request.body;
         
-        // MUDANÇA MÍNIMA: Passe 'user' em vez de 'user.name, user.email, user.password'
         await this.userService.createUser(user); 
-
+ 
         return response.status(201).json({ message: "User created successfully" });
    } catch (error: any) {
         // Se o erro for do Zod, retornamos os erros detalhados por campo

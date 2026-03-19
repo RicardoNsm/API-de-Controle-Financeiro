@@ -3,7 +3,7 @@ import { User } from "../entities/UserEntities.js";
 import { UserRepository } from "../repository/UserRepository.js";
 import jwt from "jsonwebtoken"
 import * as bcrypt from "bcrypt"
-import { createUserSchema } from "../schema/user.schema.js";
+import { CreateUserInput, createUserSchema } from "../schema/user.schema.js";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -13,7 +13,7 @@ export class UserService {
     ){
         this.userRepository = userRepository;
     }
-    createUser = async (data: any) => {
+    createUser = async (data: CreateUserInput) => {
         const validatedData = createUserSchema.parse(data);
 
         const existingUser = await this.userRepository.getUserByEmail(validatedData.email);

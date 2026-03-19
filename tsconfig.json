@@ -10,7 +10,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext", // Mantemos NodeNext, mas vamos ajustar o resto
     "lib": ["esnext"],
-    "types": ["node", "reflect-metadata"],
+    "types": ["node", "reflect-metadata","jest"],
 
     /* Configurações para TypeORM e Decorators */
     "experimentalDecorators": true,
