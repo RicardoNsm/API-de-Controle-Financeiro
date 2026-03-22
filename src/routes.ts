@@ -18,8 +18,11 @@ router.get("/users/:id", VerifyAuth ,userController.getUserById);
 router.get("/users", VerifyAuth, userController.getAllUsers);
 router.delete("/users/me", VerifyAuth, userController.deleteUser);
 
+
 router.post("/transactions", VerifyAuth, transactionController.createTransaction);
+router.get("/transactions/summary", VerifyAuth, transactionController.getTransactionSummary);
 router.get("/transactions/:id", VerifyAuth, transactionController.getTransactionById);
-router.get("/transactions", VerifyAuth, transactionController.getTransactionByUserId);
+router.get("/transactions", VerifyAuth, transactionController.getAllTransactions);
+router.get("/transactions/me", VerifyAuth, transactionController.getTransactionByUserId);
 router.put("/transactions/:id", VerifyAuth, transactionController.updateTransaction);//bug
 router.delete("/transactions/:id", VerifyAuth, transactionController.deleteTransaction);

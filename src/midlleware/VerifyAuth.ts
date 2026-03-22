@@ -13,7 +13,7 @@ import jwt from "jsonwebtoken";
             request.user = {
                 id: decoded.sub
             }
-
+           
         return next()
     }catch(err){
         return response.status(400).json({ message: 'não autorizado'})

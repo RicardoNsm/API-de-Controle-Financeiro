@@ -18,12 +18,14 @@ export class TransactionController {
         }
 
         const userId = request.user?.id
+       
 
         this.transactionService.createTransaction(
             title,
             amount,
             type,
-            userId)
+            userId
+        )
         return response.status(200).json({ message : "created successfully"})
        }
        getTransactionById = async (request: Request, response: Response) => {
@@ -77,5 +79,28 @@ export class TransactionController {
     } catch (err: any) {
         return response.status(400).json({ message:"Erro ao deletar transaction" });
     }
+    }
+
+    getAllTransactions = async (request: Request, response: Response) => {
+
+        const page = Math.max(1,Number(request.query.page) || 1)
+        const limit = Math.max(1,Number(request.query.limit) || 10)
+
+        const result = await this.transactionService.getAllTransaction(page, limit)
+
+        return response.status(200).json(result)
+    }
+
+    getTransactionSummary = async (request: Request, response: Response) => {
+          
+        if (!request.user) {
+        return response.status(401).json({ message: "não autorizado" })
+        }
+
+        const userId = request.user.id
+
+        const transactions = await this.transactionService.getTransactionSummary(userId)
+
+        return response.status(200).json({transactions})
     }
 }

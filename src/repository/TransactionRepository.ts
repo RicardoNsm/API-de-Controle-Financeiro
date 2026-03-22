@@ -14,6 +14,7 @@ export class TransactionRepository{
     createTransaction = async (transaction: Transaction): Promise<Transaction> => {
         return await this.manager.save(transaction)
     }
+    
     getTransactionById = async (id: string): Promise<Transaction | null> => {
         return await this.manager.findOne(Transaction, {
             where: {
@@ -38,5 +39,16 @@ export class TransactionRepository{
        return await this.manager.save(transaction);
     }
     deleteTransaction = async (id:string) => {
-        return await this.manager.delete(Transaction, {id})    }
+        return await this.manager.delete(Transaction, {id})    
+    }
+    findPaginado = async (limit:number, offset: number) => {
+        return await this.manager.findAndCount(Transaction, {
+            select: ["id","title","amount","type","id_user"],
+            take: limit,
+            skip: offset,
+            order: {
+                id:"DESC"
+            }
+        })
+    }
 }

@@ -15,7 +15,7 @@ export class UserRepository {
         return await this.manager.save(User);
     }
     getUserById = async (id:string): Promise<User | null> => {
-        return await this.manager.findOne(User, {
+        return this.manager.findOne(User, {
             where: {
                 id
             }
@@ -25,7 +25,13 @@ export class UserRepository {
         return await this.manager.findOne(User, {
             where: {
                 email
-            }
+            },
+            select: [
+                "id",
+                "name",
+                "email",
+                "password"
+            ]
         })
     }
 
@@ -49,5 +55,17 @@ export class UserRepository {
     }
     deleteUser = async (id: string) => {
         return await this.manager.delete(User, {id})
+    }
+
+    findPaginado = async (limit: number, offset: number) => {
+        
+        return await this.manager.findAndCount(User, {
+            select: ["id", "name", "email"],
+            take: limit,   
+            skip: offset,  
+            order: {
+                id: "DESC" 
+            }
+        });
     }
 }

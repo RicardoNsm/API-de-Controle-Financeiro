@@ -30,4 +30,36 @@ export class TransactionService{
      deleteTransaction = async (id:string) => {
         return await this.transactionRepository.deleteTransaction(id)
      }
+     getAllTransaction = async (page:number, limit: number) => {
+        const offset = (page - 1) * limit
+        const [users,total] = await this.transactionRepository.findPaginado(limit,offset)
+
+        return{
+            data: users,
+            pagination: {
+                totalItems: total,
+                totalPages: Math.ceil(total/limit),
+                currentPage: page
+            }
+        }
+     }
+
+     getTransactionSummary = async (id_user: string) => {
+        const transactions = await this.transactionRepository.getTransactionByUserId(id_user)
+
+        const incomeTransaction = transactions.filter(transaction => transaction.type === "income")
+
+        const totalIncome = incomeTransaction.reduce((acumulador, transaction) => acumulador + transaction.amount, 0)
+
+        const expenseTransaction = transactions.filter(transaction => transaction.type === "expense")
+
+        const totalExpense = expenseTransaction.reduce((acumulador, transaction) => acumulador + transaction.amount,0)
+
+        const saldo = totalIncome - totalExpense
+        return{
+            saldo,
+            totalIncome,
+            totalExpense
+        }
+     }
 } 

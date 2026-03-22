@@ -20,15 +20,12 @@ createUser = async (request: Request, response: Response): Promise<Response> => 
  
         return response.status(201).json({ message: "User created successfully" });
    } catch (error: any) {
-        // Se o erro for do Zod, retornamos os erros detalhados por campo
         if (error instanceof z.ZodError) {
             return response.status(400).json({
                 message: "Erro de validação",
-                errors: error.flatten().fieldErrors // Isso deixa o erro limpo!
+                errors: error.flatten().fieldErrors 
             });
         }
-
-        // Se for outro erro (como e-mail já cadastrado), retorna a mensagem simples
         return response.status(400).json({ error: error.message });
     }
 }
@@ -51,13 +48,22 @@ createUser = async (request: Request, response: Response): Promise<Response> => 
 
     getAllUsers = async (request: Request,response: Response) => {
        
-       try{
-         const users = await this.userService.getAllUsers()
-        return response.status(200).json(users)
+    try {
+            const page = Math.max(1, Number(request.query.page) || 1);
+            const limit = Math.max(1, Number(request.query.limit) || 10);
 
-       }catch(err){
-        return(err)
-       }
+            const result = await this.userService.getAllUsers(page, limit);
+
+            return response.status(200).json(result);
+
+        } catch (err: any) {
+            // 4. Tratamento de erro básico
+            console.error("Erro no UserController:", err.message);
+            return response.status(500).json({ 
+                error: "Erro interno ao processar a listagem de usuários",
+                details: err.message 
+            });
+        }
     }
     deleteUser = async (request: Request, response: Response) => {
         
